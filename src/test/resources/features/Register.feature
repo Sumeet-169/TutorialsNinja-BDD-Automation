@@ -1,4 +1,4 @@
-Feature: User Registration
+Feature: User Registration for TutorialsNinja
 
   Scenario Outline: Verify successful user registration with valid details
 
