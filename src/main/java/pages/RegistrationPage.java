@@ -25,7 +25,6 @@ public class RegistrationPage {
     }
 
     private final By telephoneField = By.name("telephone");
-    // Enters the telephone number.
     public void enterTelephone(String telephone) {
         WebActions.enterText(telephoneField, telephone);
     }
@@ -42,19 +41,17 @@ public class RegistrationPage {
 
     private final By privacyPolicyCheckbox = By.name("agree");
     public void acceptPrivacyPolicy() {
-        driver.findElement(privacyPolicyCheckbox).click();
+        WebActions.click(privacyPolicyCheckbox);
     }
-
     private final By continueButton =
             By.cssSelector("input[type='submit'][value='Continue']");
     public void clickContinue() {
-        driver.findElement(continueButton).click();
+        WebActions.click(continueButton);
     }
-
     private final By accountCreatedHeading =
             By.xpath("//h1[normalize-space()='Your Account Has Been Created!']");
 
     public boolean isAccountCreatedPageDisplayed() {
         return driver.findElement(accountCreatedHeading).isDisplayed();
     }
-   }
+}
