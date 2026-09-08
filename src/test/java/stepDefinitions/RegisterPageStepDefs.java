@@ -5,6 +5,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.HomePage;
+import pages.LoginPage;
 import pages.RegistrationPage;
 import utils.ConfigReader;
 
@@ -13,6 +14,8 @@ public class RegisterPageStepDefs {
     private final RegistrationPage registrationPage = new RegistrationPage();
     private String generatedEmail;
     private final HomePage homePage = new HomePage();
+    private final LoginPage loginPage = new LoginPage();
+
 
     @Given("^USER is on \"([^\"]*)\" page$")
     public void userIsOnPage(String pageName) {
@@ -21,12 +24,25 @@ public class RegisterPageStepDefs {
 
     @When("^USER navigates to \"([^\"]*)\" page from \"([^\"]*)\"$")
     public void userNavigatesToPageFrom(String targetPage, String menuName) {
+
         homePage.clickMyAccount();
-        homePage.clickRegister();
+
+        if (targetPage.equalsIgnoreCase("Register")) {
+            homePage.clickRegister();
+
+        } else if (targetPage.equalsIgnoreCase("Login")) {
+            homePage.clickLogin();
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Unsupported target page: " + targetPage
+            );
+        }
     }
 
     @When("^USER enters value \"([^\"]*)\" in \"([^\"]*)\"$")
     public void userEntersValue(String value, String fieldName) {
+
         switch (fieldName) {
 
             case "First Name":
@@ -41,8 +57,14 @@ public class RegisterPageStepDefs {
                 registrationPage.enterTelephone(value);
                 break;
 
+            case "Email":
+                loginPage.enterEmail(value);
+                break;
+
             default:
-                throw new IllegalArgumentException("Unsupported registration field: " + fieldName);
+                throw new IllegalArgumentException(
+                        "Unsupported field: " + fieldName
+                );
         }
     }
 
@@ -55,7 +77,9 @@ public class RegisterPageStepDefs {
 
     @When("^USER enters configured password in \"([^\"]*)\"$")
     public void userEntersConfiguredPasswordIn(String fieldName) {
+        //for loginpage
         String password = ConfigReader.getProperty("registration.password");
+
         switch (fieldName) {
 
             case "Password":
@@ -85,10 +109,20 @@ public class RegisterPageStepDefs {
     @When("^USER clicks on the button \"([^\"]*)\"$")
     public void userClicksOnTheButton(String buttonName) {
 
-        if (!buttonName.equalsIgnoreCase("Continue")) {
-            throw new IllegalArgumentException("Unsupported button: " + buttonName);
+        if (buttonName.equalsIgnoreCase("Continue")) {
+
+            registrationPage.clickContinue();
+
+        } else if (buttonName.equalsIgnoreCase("Login")) {
+
+            loginPage.clickLogin();
+
+        } else {
+
+            throw new IllegalArgumentException(
+                    "Unsupported button: " + buttonName
+            );
         }
-        registrationPage.clickContinue();
     }
 
     @Then("^USER validates \"([^\"]*)\" page is displayed$")

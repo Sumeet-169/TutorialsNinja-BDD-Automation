@@ -12,22 +12,19 @@ public class WebActions {
     public static void enterText(By locator, String value) {
         driver = DriverFactory.getDriver();
         // this will find the required element using the supplied locator
-        WebElement element = driver.findElement(locator);
-
-        // Clear any existing value from the field.
-        element.clear();
-
+       WebElement element = driver.findElement(locator);
+//        driver.findElement(locator).sendKeys(value);
+//         Clear any existing value from the field.
+       element.clear();
         // Enter the required value.
         element.sendKeys(value);
     }
+
     // this will clicks the element identified by the locator.
     public static void click(By locator) {
-
-        // Get the currently active WebDriver from DriverFactory.
         driver = DriverFactory.getDriver();
-
         // Find the required element and click it.
-        WebElement element = driver.findElement(locator);
-        element.click();
-    }
+       driver.findElement(locator).click();
+
+           }
 }
